@@ -1,9 +1,9 @@
 import express from "express";
-import categoriaRouter from "../API/src/Categoria.js";
-import compraRouter from "../API/src/Compra.js";
-import detalleRouter from "../API/src/DetalleCompra.js";
-import productoRouter from "../API/src/Producto.js";
-import usuarioRouter from "../API/src/Usuario.js";
+import categoriaRouter from "../API/src/routes/categoriaRoutes.js";
+import compraRouter from "../API/src/routes/compraRoutes.js";
+import detalleRouter from "../API/src/routes/detalleRoutes.js";
+import productoRouter from "../API/src/routes/productoRoutes.js";
+import usuarioRouter from "../API/src/routes/usuarioRoutes.js";
 const app = express();
 
 
