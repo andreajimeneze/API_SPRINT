@@ -1,21 +1,14 @@
-import pg from "pg";
 import dotenv from "dotenv";
-const { Pool } = pg;
 dotenv.config();
 
-const pool = new Pool({
-	// host     : process.env.HOST_DB,
-	// user     : process.env.USER_DB,
-	// password : process.env.PASS_DB,
-	// port	 : process.env.PORT_DB,
-	// database : process.env.DB_DB
+	export const PORT = process.env.PORT || 4000
+	export const HOST = process.env.HOST_DB || "localhost"
+	export const USER = process.env.USER_DB || "postgres"
+	export const PASS = process.env.PASS_DB || "1234"
+	export const PORT_DV = process.env.PORT_DB || 5432
+	export const DB = process.env.DB_DB || "pezmosaico"
 
-	host     : "localhost",
-	user     : "postgres",
-	password : "1234",
-	port	 : 5432,
-	database : "pezmosaico"
+	
+	
 
-})
 
-export default pool;

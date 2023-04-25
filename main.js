@@ -4,6 +4,7 @@ import compraRouter from "../API/src/routes/compraRoutes.js";
 import detalleRouter from "../API/src/routes/detalleRoutes.js";
 import productoRouter from "../API/src/routes/productoRoutes.js";
 import usuarioRouter from "../API/src/routes/usuarioRoutes.js";
+import { PORT } from "../API/conect.js";
 const app = express();
 
 
@@ -22,5 +23,5 @@ app.use((req,res,next)=> {
 })
 
 app.listen(4000, () => {
-    console.log("En Puerto 4000");
+    console.log(`En Puerto 4000`);
   })

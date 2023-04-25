@@ -1,5 +1,5 @@
 import express from "express";
-import pool from "../../conect.js";
+import pool from "../../db.js";
 const router = express.Router();
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
@@ -37,7 +37,6 @@ export const getProducto = async (req, res) => {
                 message: "Producto no encontrado"
             })
         }
-
     } catch (error) {
         return res.status(500).json({
             message: "Algo salió mal. Intente más tarde"
@@ -79,7 +78,6 @@ export const deletePdto = async (req, res) => {
         const result = await pool.query("DELETE from producto WHERE id = $1 RETURNING *", [id]);
         const rows = result.rows;
         if (rows.length === 0) {
-            
             return res.status(404).json({ message: "Registro no Existe" })
         } else {
             res.sendStatus(204)

@@ -1,5 +1,5 @@
 import express from "express";
-import pool from "../../conect.js";
+import pool from "../../db.js";
 import CryptoJS from "crypto-js";
 const router = express.Router();
 router.use(express.json());
@@ -28,7 +28,6 @@ export const getUsuario = async (req, res) => {
                 message: "Usuario no existe"
             })
         }
-
     } catch (error) {
         return res.status(500).json({
             message: "Algo salió mal. Intente más tarde"
