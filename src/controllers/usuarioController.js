@@ -8,7 +8,7 @@ router.use(express.urlencoded({ extended: true }));
 
 export const getUsuarios = async (req, res) => {
     try {
-        const resultado = await pool.query('SELECT id, usuario, password FROM registrousuario');
+        const resultado = await pool.query('SELECT u.id, u.usuario, u.password, u.rol_id, r.descripcion FROM registrousuario u JOIN rol r ON u.rol_id = r.id ORDER BY u.id');
         res.json(resultado.rows);
     } catch (error) {
         return res.status(500).json({
@@ -20,7 +20,7 @@ export const getUsuarios = async (req, res) => {
 export const getUsuario = async (req, res) => {
     try {
         const { id } = req.params;
-        const resultado = await pool.query('SELECT id, rut, usuario FROM registrousuario WHERE id =$1', [id]);
+        const resultado = await pool.query('SELECT u.id, u.usuario, u.password, u.rol_id, r.descripcion FROM registrousuario u JOIN rol r ON u.rol_id = r.id WHERE u.id =$1', [id]);
         if (resultado.rows.length === 1) {
             res.json(resultado.rows);
         } else {

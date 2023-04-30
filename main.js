@@ -11,12 +11,12 @@ const app = express();
 
 app.use(express.json());
 
-app.use("/API/v1", categoriaRouter);
-app.use("/API/v1", compraRouter);
-app.use("/API/v1", detalleRouter);
-app.use("/API/v1", productoRouter);
-app.use("/API/v1", usuarioRouter);
-app.use("/API/v1", estadoRouter);
+app.use("/api/v1", categoriaRouter);
+app.use("/api/v1", compraRouter);
+app.use("/api/v1", detalleRouter);
+app.use("/api/v1", productoRouter);
+app.use("/api/v1", usuarioRouter);
+app.use("/api/v1", estadoRouter);
 
 app.use((req,res,next)=> {
   res.status(404).json({
