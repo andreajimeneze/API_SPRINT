@@ -4,7 +4,7 @@ const router = express.Router();
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
-
+// OBTENER PRODUCTOS CON CATEGORÍAS ORDENADOS POR ID (TABLA PRODUCTOS JOIN CON TABLA CATEGORÍA)
 export const getProductos = async (req, res) => {
     try {
         const result = await pool.query('SELECT p.id, p.nombre, p.precio, p.imagen, p.existencia, p.categoria_id, c.categoria FROM producto p JOIN categoria c ON p.categoria_id = c.id ORDER BY p.id');
@@ -22,7 +22,7 @@ export const getProductos = async (req, res) => {
     }
 };
 
-
+// OBTENER UN PRODUCTO POR SU ID
 export const getProducto = async (req, res) => {
     try {
         const { id } = req.params;
@@ -44,15 +44,98 @@ export const getProducto = async (req, res) => {
     }
 };
 
+// OBTENER PRODUCTOS ORDENADOS POR PRECIO ASCENDENTE
+export const getPdtosByPrize = async (req, res) => {
+    try {
+        const result = await pool.query('SELECT p.id, p.nombre, p.precio, p.imagen, c.categoria FROM producto p JOIN categoria c ON p.categoria_id = c.id ORDER BY p.precio');
+        console.log(result)
+        const rows = result.rows;
+        if (rows.length > 0) {
+            res.json(rows);
+
+        } else {
+            return res.status(404).json({
+                message: "Producto no encontrado"
+            })
+        }
+    } catch (error) {
+        return res.status(500).json({
+            message: "Algo salió mal. Intente más tarde"
+        })
+    }
+}
+
+// OBTENER PRODUCTOS ORDENADOS POR CATEGORÍA
+export const getPdtosByCategory = async (req, res) => {
+    try {
+        const result = await pool.query('SELECT p.id, p.nombre, p.precio, p.imagen, c.categoria FROM producto p JOIN categoria c ON p.categoria_id = c.id ORDER BY c.categoria');
+        console.log(result)
+        const rows = result.rows;
+        if (rows.length > 0) {
+            res.json(rows);
+
+        } else {
+            return res.status(404).json({
+                message: "Producto no encontrado"
+            })
+        }
+    } catch (error) {
+        return res.status(500).json({
+            message: "Algo salió mal. Intente más tarde"
+        })
+    }
+}
+
+// OBTENER CANTIDAD DE PRODUCTOS POR CATEGORÍA (GROUP BY)
+export const getPdtosByIdGroupCat = async (req, res) => {
+    try {
+        const result = await pool.query('SELECT COUNT(p.id) AS cantidad, c.categoria FROM producto p JOIN categoria c ON p.categoria_id = c.id GROUP BY c.categoria ORDER BY cantidad');
+        console.log(result)
+        const rows = result.rows;
+        if (rows.length > 0) {
+            res.json(rows);
+
+        } else {
+            return res.status(404).json({
+                message: "Producto no encontrado"
+            })
+        }
+    } catch (error) {
+        return res.status(500).json({
+            message: "Algo salió mal. Intente más tarde"
+        })
+    }
+}
+
+export const getPdtosByName = async (req, res) => {
+    try {
+        const result = await pool.query('SELECT p.id, p.nombre, p.precio, p.imagen, c.categoria FROM producto p JOIN categoria c ON p.categoria_id = c.id ORDER BY p.nombre');
+        console.log(result)
+        const rows = result.rows;
+        if (rows.length > 0) {
+            res.json(rows);
+
+        } else {
+            return res.status(404).json({
+                message: "Producto no encontrado"
+            })
+        }
+    } catch (error) {
+        return res.status(500).json({
+            message: "Algo salió mal. Intente más tarde"
+        })
+    }
+}
+
 export const addProducto = async (req, res) => {
     try {
         const { nombre } = req.body;
         const result = await pool.query("SELECT nombre FROM producto WHERE nombre = $1", [nombre]);
         if (result.rows.length <= 0) {
-            const {nombre, precio, imagen, existencia, categoria_id } = req.body;
+            const { nombre, precio, imagen, existencia, categoria_id } = req.body;
             const insertResult = await pool.query("INSERT INTO producto (nombre, precio, imagen, existencia, categoria_id) VALUES ($1, $2, $3, $4, $5) RETURNING *", [nombre, precio, imagen, existencia, categoria_id]);
             const rows = insertResult.rows;
- 
+
             res.send({
                 id: rows.insertId,
                 nombre,
@@ -94,11 +177,11 @@ export const updatePdto = async (req, res) => {
         const { id } = req.params;
         const result = await pool.query("SELECT nombre FROM producto WHERE id = $1", [id]);
         console.log(result.rows.length)
-        if(result.rows.length === 1){ 
-        const { nombre, precio, imagen, existencia, categoria_id } = req.body;
-        const { id } = req.params;
-        const resultado = await pool.query("UPDATE producto SET nombre = COALESCE($1,nombre), precio = COALESCE($2,precio), imagen = COALESCE($3,imagen), existencia = COALESCE($4, existencia), categoria_id = COALESCE($5, categoria_id) WHERE id = $6 RETURNING *", [nombre, precio, imagen, existencia, categoria_id, id])
-        res.json(resultado.rows[0])
+        if (result.rows.length === 1) {
+            const { nombre, precio, imagen, existencia, categoria_id } = req.body;
+            const { id } = req.params;
+            const resultado = await pool.query("UPDATE producto SET nombre = COALESCE($1,nombre), precio = COALESCE($2,precio), imagen = COALESCE($3,imagen), existencia = COALESCE($4, existencia), categoria_id = COALESCE($5, categoria_id) WHERE id = $6 RETURNING *", [nombre, precio, imagen, existencia, categoria_id, id])
+            res.json(resultado.rows[0])
         } else {
             return res.status(404).json({ message: "Registro no Existe" })
         }

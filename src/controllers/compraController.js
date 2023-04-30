@@ -4,25 +4,56 @@ const router = express.Router();
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
-
-export const getCompra = async (req, res) => {
+export const getCompras = async (req, res) => {
     try {
-        const resultado = await pool.query('SELECT c.fecha, c.monto, c.id_usuario, r.nombres, r.apellidos FROM compra c JOIN registrousuario r ON c.id_usuario = r.id ORDER BY r.id');
-        res.json(resultado.rows);
+    
+        const resultado = await pool.query("SELECT c.fecha, c.monto, COALESCE(r.rut, 'sin rut') AS rut FROM compra c LEFT JOIN registrousuario r ON c.id_usuario = r.id ORDER BY c.id_usuario");
+
+        const rows = resultado.rows;
+
+        if (rows.length > 0) {
+            res.json(rows);
+        } else {
+            return res.status(404).json({
+                message: "Compra no encontrada"
+            })
+        }
     } catch (error) {
+        console.error(error);
         return res.status(500).json({
             message: "Algo salió mal. Intente más tarde"
         });
     }
 };
 
-export const addCompra = async (req, res) => {
+export const getCompra = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const resultado = await pool.query("SELECT c.fecha, c.monto, COALESCE(r.rut, 'sin rut') AS rut FROM compra c LEFT JOIN registrousuario r ON c.id_usuario = r.id WHERE c.id = $1 ORDER BY c.id_usuario", [id]);
+        const rows = resultado.rows;
+
+        if (rows.length > 0) {
+            res.json(rows);
+        } else {
+            return res.status(404).json({
+                message: "Compra no encontrada"
+            })
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            message: "Algo salió mal. Intente más tarde"
+        });
+    }
+};
+
+export const setCompra = async (req, res) => {
     try {
         const fecha = new Date().toLocaleDateString();
         const { monto, id_usuario } = req.body;
-        const resultado = await pool.query("INSERT INTO compra (fecha, monto, id_usuario) VALUES ($1, $2, $3)", [fecha, monto, id_usuario]);
+        const resultado = await pool.query("INSERT INTO compra (fecha, monto, id_usuario) VALUES ($1, $2, $3) RETURNING *", [fecha, monto, id_usuario]);
         console.log(resultado);
-        res.json({})
+        res.json(resultado.rows[0]);
     } catch (error) {
         return res.status(500).json({
             message: "Algo salió mal. Intente más tarde"

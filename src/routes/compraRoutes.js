@@ -1,10 +1,12 @@
 import express from "express";
-import { getCompra, addCompra, deleteCompra, updateCompra } from "../controllers/compraController.js";
+import { getCompra, getCompras, setCompra, deleteCompra, updateCompra } from "../controllers/compraController.js";
 const router = express.Router();
 
-router.get("/compra", getCompra);
+router.get("/compra", getCompras);
 
-router.post("/compra", addCompra);
+router.get("/compra/:id", getCompra);
+
+router.post("/compra", setCompra);
 
 router.delete("/compra/:id", deleteCompra);
 

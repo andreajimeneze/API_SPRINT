@@ -7,10 +7,10 @@ router.use(express.urlencoded({ extended: true }));
 
 
 
-// RUTA PARA CATEGORÍA
+// RUTA PARA CATEGORÍA ORDER BY ID
 export const getCategorias = async (req, res) => {
     try {
-        const resultado = await pool.query('SELECT id, categoria FROM categoria');
+        const resultado = await pool.query('SELECT id, categoria, imgCategoria FROM categoria ORDER BY id');
 
         res.json(resultado.rows);
     } catch (error) {
