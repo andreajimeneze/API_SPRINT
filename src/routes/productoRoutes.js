@@ -1,9 +1,11 @@
 import express from "express";
 const router = express.Router();
-import { getProductos, getProducto, getPdtosByPrize, getPdtosByCategory, getPdtosByName, addProducto, deletePdto, updatePdto, getPdtosByIdGroupCat } from "../controllers/productoController.js";
+import { getProductos, getPdtosEstado, getProducto, getPdtosByPrize, getPdtosByCategory, getPdtosByName, addProducto, deletePdto, updatePdto, getPdtosByIdGroupCat } from "../controllers/productoController.js";
 
 
 router.get("/producto", getProductos);
+
+router.get("/producto/estado", getPdtosEstado);
 
 router.get("/producto/prize", getPdtosByPrize);
 

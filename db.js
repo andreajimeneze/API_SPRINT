@@ -8,13 +8,6 @@ const pool = new Pool({
 	password : PASS,
 	port	 : PORT_DV,
 	database : DB
-
-	// host     : "localhost",
-	// user     : "postgres",
-	// password : "1234",
-	// port	 : 5432,
-	// database : "pezmosaico"
-
 })
 
 

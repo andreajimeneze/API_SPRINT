@@ -5,12 +5,10 @@ const router = express.Router();
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
-
-
-// OBTENER CATEGORÍA ORDER BY ID
-export const getCategorias = async (req, res) => {
+// OBTENER ESTADO ORDER BY ID
+export const getEstados = async (req, res) => {
     try {
-        const resultado = await pool.query('SELECT id, categoria, imgCategoria FROM categoria ORDER BY id');
+        const resultado = await pool.query('SELECT id, descripcion FROM estado ORDER BY id');
 
         res.json(resultado.rows);
     } catch (error) {
@@ -20,16 +18,16 @@ export const getCategorias = async (req, res) => {
     }
 };
 
-// OBTENER CATEGORÍA POR ID
-export const getCategoria = async (req, res) => {
+// OBTENER ESTADO POR ID
+export const getEstado = async (req, res) => {
     try {
         const { id } = req.params;
-        const resultado = await pool.query('SELECT id, categoria FROM categoria WHERE id = $1', [id]);
+        const resultado = await pool.query('SELECT id, descripcion FROM estado WHERE id = $1', [id]);
         if (resultado.rows.length === 1) {
             res.json(resultado.rows);
         } else {
             return res.status(404).json({
-                message: "Categoría no existe"
+                message: "Estado no existe"
             })
         }
     } catch (error) {
@@ -39,18 +37,18 @@ export const getCategoria = async (req, res) => {
     }
 };
 
-// AGREGAR CATEGORÍA
-export const addCategoria = async (req, res) => {
+// AGREGAR ESTADO
+export const addEstado = async (req, res) => {
     try {
-        const { categoria } = req.body;
-        const resultado = await pool.query('SELECT id, categoria FROM categoria WHERE categoria = $1', [categoria]);
+        const { descripcion } = req.body;
+        const resultado = await pool.query('SELECT id, descripcion FROM estado WHERE categoria = $1', [descripcion]);
         if (resultado.rows.length === 1) {
             res.json({
-                message: "Categoría ya existe"
+                message: "Estado ya existe"
             })
         } else {
-            const { categoria } = req.body;
-            const resultado = await pool.query('INSERT INTO categoria (categoria) VALUES ($1) RETURNING id', [categoria]);
+            const { descripcion } = req.body;
+            const resultado = await pool.query('INSERT INTO estado (descripcion) VALUES ($1) RETURNING id', [descripcion]);
             console.log(resultado)
             res.json({});
         }
@@ -63,10 +61,10 @@ export const addCategoria = async (req, res) => {
 };
 
 // ELIMINAR CATEGORÍA
-export const deleteCateg = async (req, res) => {
+export const deleteEstado = async (req, res) => {
     try {
         const { id } = req.params
-        const resultado = await pool.query("delete from categoria where id=$1 RETURNING id", [id]);
+        const resultado = await pool.query("delete from estado where id=$1 RETURNING id", [id]);
         if (resultado.rows.length === 1) {
             res.status(200).json({ id: resultado.rows[0].id })
         } else {
@@ -79,10 +77,10 @@ export const deleteCateg = async (req, res) => {
     }
 };
 
-// ACTUALIZAR CATEGORÍA
-export const updateCateg = async (req, res) => {
-    const { categoria } = req.body;
-    const resultado = await pool.query("UPDATE categoria set categoria =$1 WHERE id=$2", [categoria, id]);
+// ACTUALIZAR ESTADO
+export const updateEstado = async (req, res) => {
+    const { descripcion } = req.body;
+    const resultado = await pool.query("UPDATE estado set descripcion =$1 WHERE id=$2", [descripcion, id]);
     console.log(resultado),
         res.json({})
 };
