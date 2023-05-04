@@ -1,19 +1,25 @@
 import express from "express";
 const router = express.Router();
-import { getProductos, getPdtosEstado, getProducto, getPdtosByPrize, getPdtosByCategory, getPdtosByName, addProducto, deletePdto, updatePdto, getPdtosByIdGroupCat } from "../controllers/productoController.js";
+import { getProductos, getPdtosEstado, getProducto, getPdtosByPrizeAsc, getPdtosByPrizeDesc, getPdtosByCategory, getPdtosByCategoryDesc, getCantPdtoGroupCat, getPdtosByNameAsc, getPdtosByNameDesc, addProducto, deletePdto, updatePdto } from "../controllers/productoController.js";
 
 
 router.get("/producto", getProductos);
 
 router.get("/producto/estado", getPdtosEstado);
 
-router.get("/producto/prize", getPdtosByPrize);
+router.get("/producto/prizea", getPdtosByPrizeAsc);
+
+router.get("/producto/prizez", getPdtosByPrizeDesc);
 
 router.get("/producto/category", getPdtosByCategory);
 
-router.get("/producto/categ", getPdtosByIdGroupCat);
+router.get("/producto/categoryz", getPdtosByCategoryDesc);
 
-router.get("/producto/name", getPdtosByName);
+router.get("/producto/categ", getCantPdtoGroupCat);
+
+router.get("/producto/namea", getPdtosByNameAsc);
+
+router.get("/producto/namez", getPdtosByNameDesc);
 
 router.get("/producto/:id", getProducto);
 

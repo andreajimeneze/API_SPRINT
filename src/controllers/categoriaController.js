@@ -39,7 +39,7 @@ export const getCategoria = async (req, res) => {
     }
 };
 
-// AGREGAR CATEGORÍA
+// AGREGAR NUEVA CATEGORÍA
 export const addCategoria = async (req, res) => {
     try {
         const { categoria } = req.body;

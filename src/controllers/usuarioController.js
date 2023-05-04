@@ -8,7 +8,7 @@ router.use(express.urlencoded({ extended: true }));
 
 export const getUsuarios = async (req, res) => {
     try {
-        const resultado = await pool.query('SELECT u.id, u.usuario, u.password, u.rol_id, r.descripcion FROM registrousuario u JOIN rol r ON u.rol_id = r.id ORDER BY u.id');
+        const resultado = await pool.query('SELECT u.id, u.nombres, u.usuario, u.password, u.rol_id, r.descripcion FROM registrousuario u JOIN rol r ON u.rol_id = r.id ORDER BY u.id');
         res.json(resultado.rows);
     } catch (error) {
         return res.status(500).json({
@@ -42,9 +42,9 @@ export const setUsuario = async (req, res) => {
         console.log(resultado.rows)
 
         if (resultado.rows.length === 0) {
-                const { rut, usuario, nombres, apellidos, direccion, telefono, email, password } = req.body;
+                const { rut, usuario, nombres, apellidos, direccion, telefono, email, password, rol_id } = req.body;
                 const hashedPassword = CryptoJS.SHA256(password).toString();
-                const queryResult = await pool.query(`INSERT INTO registrousuario (nombres, apellidos, rut, direccion, telefono, email, usuario, password) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`, [nombres, apellidos, rut, direccion, telefono, email, usuario, hashedPassword]);
+                const queryResult = await pool.query(`INSERT INTO registrousuario (nombres, apellidos, rut, direccion, telefono, email, usuario, password, rol_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`, [nombres, apellidos, rut, direccion, telefono, email, usuario, hashedPassword, rol_id]);
 
                 console.log(queryResult.rows);
                 res.json({});

@@ -41,7 +41,7 @@ export const getEstado = async (req, res) => {
 export const addEstado = async (req, res) => {
     try {
         const { descripcion } = req.body;
-        const resultado = await pool.query('SELECT id, descripcion FROM estado WHERE categoria = $1', [descripcion]);
+        const resultado = await pool.query('SELECT id, descripcion FROM estado WHERE descripcion = $1', [descripcion]);
         if (resultado.rows.length === 1) {
             res.json({
                 message: "Estado ya existe"
@@ -60,7 +60,7 @@ export const addEstado = async (req, res) => {
 
 };
 
-// ELIMINAR CATEGORÍA
+// ELIMINAR ESTADO
 export const deleteEstado = async (req, res) => {
     try {
         const { id } = req.params
@@ -79,6 +79,7 @@ export const deleteEstado = async (req, res) => {
 
 // ACTUALIZAR ESTADO
 export const updateEstado = async (req, res) => {
+    const { id } = req.params
     const { descripcion } = req.body;
     const resultado = await pool.query("UPDATE estado set descripcion =$1 WHERE id=$2", [descripcion, id]);
     console.log(resultado),
