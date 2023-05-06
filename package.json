@@ -7,16 +7,15 @@
     "crypto-js": "^4.1.1",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "method-override": "^3.0.0",
     "nodemon": "^2.0.22",
     "pg": "^8.10.0"
-  },"scripts": {
+  },
+  "scripts": {
     "dev": "nodemon main.js",
     "start": "node main.js"
   },
-"repository": {
-  "type": "git",
-  "url": "git + https://github.com/andreajimeneze/API_SPRINT.git"
-}
-
+  "repository": {
+    "type": "git",
+    "url": "git + https://github.com/andreajimeneze/API_SPRINT.git"
+  }
 }
