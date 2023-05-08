@@ -70,13 +70,12 @@ export const updateNumDoc = async (req, res) => {
     try {
         const { id } = req.params;
         const result = await pool.query("SELECT nombre FROM datos_empresa WHERE id = $1", [ id ]);
-        console.log(result.rows)
-
+        
         if (result.rows.length === 1) {
             const { nombre, direccion, telefono, email, rut } = req.body;
             const { id } = req.params;
             const resultado = await pool.query("UPDATE datos_empresa SET nombre = COALESCE($1, nombre), direccion = COALESCE($2, direccion), telefono = COALESCE($3, telefono) , email = COALESCE($4, email), rut = COALESCE($5, rut) WHERE id = $6 RETURNING nombre", [ nombre,direccion, telefono, email, rut, id ])
-            console.log(resultado.rows),
+            
             res.json(resultado.rows[0])
         } else {
             return res.status(404).json({ message: "Registro no Existe" })

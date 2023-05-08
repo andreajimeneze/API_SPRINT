@@ -1,3 +1,4 @@
+-- Active: 1680181159627@@127.0.0.1@5432@pezmosaico
 CREATE DATABASE pezmosaico;
 
 CREATE TABLE rol(  

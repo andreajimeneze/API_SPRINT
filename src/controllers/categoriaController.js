@@ -51,7 +51,7 @@ export const addCategoria = async (req, res) => {
         } else {
             const { categoria } = req.body;
             const resultado = await pool.query('INSERT INTO categoria (categoria) VALUES ($1) RETURNING id', [categoria]);
-            console.log(resultado)
+          
             res.json({});
         }
     } catch (error) {
@@ -83,7 +83,7 @@ export const deleteCateg = async (req, res) => {
 export const updateCateg = async (req, res) => {
     const { categoria } = req.body;
     const resultado = await pool.query("UPDATE categoria set categoria =$1 WHERE id=$2", [categoria, id]);
-    console.log(resultado),
+   
         res.json({})
 };
 

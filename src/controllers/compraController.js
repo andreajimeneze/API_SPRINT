@@ -8,16 +8,19 @@ router.use(express.urlencoded({ extended: true }));
 export const getCompras = async (req, res) => {
     try {
 
-        const resultado = await pool.query("SELECT c.fecha, c.monto_neto, c.impuesto, c.monto_bruto, c.gasto_envio COALESCE(r.rut, 'sin rut') AS rut FROM compra c LEFT JOIN registrousuario r ON c.id_usuario = r.id ORDER BY c.id_usuario");
+        // const resultado = await pool.query("SELECT c.id, c.fecha, c.monto_neto, c.impuesto, c.monto_bruto, c.gasto_envio COALESCE(r.rut, 'sin rut') AS rut FROM compra c LEFT JOIN registrousuario r ON c.id_usuario = r.id ORDER BY c.id");
+
+        const resultado = await pool.query("SELECT id, fecha, monto_neto, impuesto, monto_bruto, gasto_envio FROM compra  ORDER BY id");
 
         const rows = resultado.rows;
 
-        if (rows.length > 0) {
-            res.json(rows);
-        } else {
+        if (rows.length <= 0) {
             return res.status(404).json({
                 message: "Compra no encontrada"
             })
+           
+        } else {
+            res.json(rows);
         }
     } catch (error) {
         console.error(error);
@@ -35,9 +38,10 @@ export const getCompra = async (req, res) => {
         const rows = resultado.rows;
 
         if (rows.length > 0) {
-            res.json(rows);
+            console.log(rows)
+            res.json({ success: true, rows });
         } else {
-            return res.status(404).json({
+            return res.status(404).json({ success: false,
                 message: "Compra no encontrada"
             })
         }
@@ -56,22 +60,20 @@ export const realizarCompra = async (req, res) => {
     try {
       await client.query('BEGIN');
       const { fecha, monto_neto, id_usuario, impuesto, monto_bruto, gasto_envio } = req.body.compra;
-        console.log(req.body.compra)
+        
         const productos = req.body.productos.map(p => ({
             id: p.id,
             nombre: p.nombre,
             precio: p.precio,
             cantidad: p.cantidad
         }));
-        console.log(productos)
+       
       // Insertar la compra en la tabla "compra"
       const compraInsertada = await client.query(
         'INSERT INTO compra (fecha, monto_neto, id_usuario, impuesto, monto_bruto, gasto_envio) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id',
         [fecha, parseInt(monto_neto), parseInt(id_usuario), parseInt(impuesto), parseInt(monto_bruto), parseInt(gasto_envio)]
       );
 
-      console.log(compraInsertada.rows[0])
-  
       const promises = [];
       // Insertar los productos comprados en la tabla "detalle_compra"
       for (const e of productos) {
@@ -88,6 +90,7 @@ export const realizarCompra = async (req, res) => {
       await Promise.all(promises);
       await client.query('COMMIT');
       res.json({ mensaje: "Compra realizada con éxito" });
+      return compraInsertada.rows[0]
     } catch (error) {
       await client.query('ROLLBACK');
       console.log('Compra cancelada');

@@ -1,4 +1,4 @@
-                    PROYECTO PERSONAL: TIENDA PEZ MOSAICO
+                    PROYECTO PERSONAL: API DE LA TIENDA PEZ MOSAICO
 
 Instrucciones para ejecutar el proyecto:
 

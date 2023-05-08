@@ -39,14 +39,12 @@ export const setUsuario = async (req, res) => {
     try {
         const { rut, usuario } = req.body;
         const resultado = await pool.query('SELECT rut, usuario FROM registrousuario WHERE rut = $1 OR usuario = $2', [rut, usuario]);
-        console.log(resultado.rows)
 
         if (resultado.rows.length === 0) {
                 const { rut, usuario, nombres, apellidos, direccion, telefono, email, password, rol_id } = req.body;
                 const hashedPassword = CryptoJS.SHA256(password).toString();
                 const queryResult = await pool.query(`INSERT INTO registrousuario (nombres, apellidos, rut, direccion, telefono, email, usuario, password, rol_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`, [nombres, apellidos, rut, direccion, telefono, email, usuario, hashedPassword, rol_id]);
 
-                console.log(queryResult.rows);
                 res.json({});
         } else {
             res.status(409).json({

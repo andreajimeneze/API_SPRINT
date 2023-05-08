@@ -46,7 +46,7 @@ export const getProducto = async (req, res) => {
     try {
         const { id } = req.params;
         const result = await pool.query('SELECT p.id, p.nombre, p.precio, p.imagen, p.existencia, p.categoria_id, c.categoria, p.id_estado FROM producto p JOIN categoria c ON p.categoria_id = c.id WHERE p.id_estado = 1 AND p.id = $1', [id]);
-        console.log(result)
+       
         const rows = result.rows;
         if (rows.length > 0) {
             res.json(rows);
@@ -67,7 +67,7 @@ export const getProducto = async (req, res) => {
 export const getPdtosByPrizeAsc = async (req, res) => {
     try {
         const result = await pool.query('SELECT p.id, p.nombre, p.precio, p.imagen, c.categoria FROM producto p JOIN categoria c ON p.categoria_id = c.id WHERE id_estado = 1 ORDER BY p.precio');
-        console.log(result)
+        
         const rows = result.rows;
         if (rows.length > 0) {
             res.json(rows);
@@ -88,7 +88,7 @@ export const getPdtosByPrizeAsc = async (req, res) => {
 export const getPdtosByPrizeDesc = async (req, res) => {
     try {
         const result = await pool.query('SELECT p.id, p.nombre, p.precio, p.imagen, c.categoria FROM producto p JOIN categoria c ON p.categoria_id = c.id WHERE id_estado = 1 ORDER BY p.precio DESC');
-        console.log(result)
+        
         const rows = result.rows;
         if (rows.length > 0) {
             res.json(rows);
@@ -110,7 +110,7 @@ export const getPdtosByPrizeDesc = async (req, res) => {
 export const getPdtosByCategory = async (req, res) => {
     try {
         const result = await pool.query('SELECT p.id, p.nombre, p.precio, p.imagen, c.categoria FROM producto p JOIN categoria c ON p.categoria_id = c.id WHERE p.id_estado = 1 ORDER BY c.categoria');
-        console.log(result)
+        
         const rows = result.rows;
         if (rows.length > 0) {
             res.json(rows);
@@ -131,7 +131,7 @@ export const getPdtosByCategory = async (req, res) => {
 export const getPdtosByCategoryDesc = async (req, res) => {
     try {
         const result = await pool.query('SELECT p.id, p.nombre, p.precio, p.imagen, c.categoria FROM producto p JOIN categoria c ON p.categoria_id = c.id WHERE p.id_estado = 1 ORDER BY c.categoria DESC');
-        console.log(result)
+       
         const rows = result.rows;
         if (rows.length > 0) {
             res.json(rows);
@@ -152,7 +152,7 @@ export const getPdtosByCategoryDesc = async (req, res) => {
 export const getCantPdtoGroupCat = async (req, res) => {
     try {
         const result = await pool.query('SELECT COUNT(p.id) AS cantidad, c.categoria FROM producto p JOIN categoria c ON p.categoria_id = c.id WHERE p.id_estado = 1 GROUP BY c.categoria');
-        console.log(result)
+        
         const rows = result.rows;
         if (rows.length > 0) {
             res.json(rows);
@@ -173,7 +173,7 @@ export const getCantPdtoGroupCat = async (req, res) => {
 export const getPdtosByNameAsc = async (req, res) => {
     try {
         const result = await pool.query('SELECT p.id, p.nombre, p.precio, p.imagen, c.categoria FROM producto p JOIN categoria c ON p.categoria_id = c.id WHERE p.id_estado = 1 ORDER BY p.nombre');
-        console.log(result)
+       
         const rows = result.rows;
         if (rows.length > 0) {
             res.json(rows);
@@ -195,7 +195,7 @@ export const getPdtosByNameAsc = async (req, res) => {
 export const getPdtosByNameDesc = async (req, res) => {
     try {
         const result = await pool.query('SELECT p.id, p.nombre, p.precio, p.imagen, c.categoria FROM producto p JOIN categoria c ON p.categoria_id = c.id WHERE p.id_estado = 1 ORDER BY p.nombre DESC');
-        console.log(result)
+        
         const rows = result.rows;
         if (rows.length > 0) {
             res.json(rows);
@@ -266,12 +266,13 @@ export const updatePdto = async (req, res) => {
     try {
         const { id } = req.params;
         const result = await pool.query("SELECT nombre FROM producto WHERE id = $1", [id]);
-        console.log(result.rows)
+      
         if (result.rows.length === 1) {
             const { nombre, precio, imagen, existencia, categoria_id, id_estado } = req.body;
             const { id } = req.params;
             const resultado = await pool.query("UPDATE producto SET nombre = COALESCE($1,nombre), precio = COALESCE($2,precio), imagen = COALESCE($3,imagen), existencia = COALESCE($4, existencia), categoria_id = COALESCE($5, categoria_id), id_estado = COALESCE($6, id_estado) WHERE id = $7 RETURNING nombre", [nombre, precio, imagen, existencia, categoria_id, id_estado, id])
             res.json(resultado.rows[0])
+            console.log(resultado.rows[0])
         } else {
             return res.status(404).json({ message: "Registro no Existe" })
         }

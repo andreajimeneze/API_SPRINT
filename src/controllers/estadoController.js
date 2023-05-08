@@ -49,7 +49,7 @@ export const addEstado = async (req, res) => {
         } else {
             const { descripcion } = req.body;
             const resultado = await pool.query('INSERT INTO estado (descripcion) VALUES ($1) RETURNING id', [descripcion]);
-            console.log(resultado)
+           
             res.json({});
         }
     } catch (error) {
@@ -82,7 +82,7 @@ export const updateEstado = async (req, res) => {
     const { id } = req.params
     const { descripcion } = req.body;
     const resultado = await pool.query("UPDATE estado set descripcion =$1 WHERE id=$2", [descripcion, id]);
-    console.log(resultado),
+  
         res.json({})
 };
 
