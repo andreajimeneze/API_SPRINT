@@ -58,9 +58,6 @@ CREATE TABLE detalle_compra(
     cantidad INT NOT NULL
 );
 
-
-
-
 CREATE TABLE datos_empresa (
   id SERIAL PRIMARY KEY,
   nombre VARCHAR(50) NOT NULL,
