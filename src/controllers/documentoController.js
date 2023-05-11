@@ -5,9 +5,9 @@ const router = express.Router();
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
-export const getTipoDoc = async (req, res) => {
+export const getDocument = async (req, res) => {
     try {
-        const resultado = await pool.query('SELECT id, nombre FROM tipo_documento');
+        const resultado = await pool.query('SELECT id, tipo_documento, numero FROM documento');
 
         res.json(resultado.rows);
     } catch (error) {
@@ -17,13 +17,13 @@ export const getTipoDoc = async (req, res) => {
     }
 };
 
-export const setTipoDoc = async (req, res) => {
+export const setDocument = async (req, res) => {
     try {
         const { nombre } = req.body;
-        const result = await pool.query("SELECT nombre FROM tipo_documento WHERE nombre = $1", [ nombre ]);
+        const result = await pool.query("SELECT nombre FROM documento WHERE nombre = $1", [ nombre ]);
         if (result.rows.length === 0) {
-        const { nombre } = req.body;
-        const insertResult = await pool.query("INSERT INTO tipo_documento (nombre) VALUES ($1) RETURNING nombre", [ nombre ]);
+        const { tipo_documento, numero } = req.body;
+        const insertResult = await pool.query("INSERT INTO documento (tipo_documento, numero) VALUES ($1, $2) RETURNING id", [ tipo_documento, numero ]);
         const rows = insertResult.rows;
 
             res.send({
@@ -40,10 +40,10 @@ export const setTipoDoc = async (req, res) => {
     }
 };
 
-export const deleteTipoDoc = async (req, res) => {
+export const deleteDoc = async (req, res) => {
     try {
         const { id } = req.params
-        const resultado = await pool.query("DELETE from tipo_documento WHERE id = $1 RETURNING id", [ id ]);
+        const resultado = await pool.query("DELETE from documento WHERE id = $1 RETURNING id", [ id ]);
         if (resultado.rows) {
             res.status(200).json({ id: resultado.rows[0].id })
         } else {
@@ -56,15 +56,15 @@ export const deleteTipoDoc = async (req, res) => {
     }
 };
 
-export const updateTipoDoc = async (req, res) => {
+export const updateDocument = async (req, res) => {
     try {
         const { id } = req.params;
-        const result = await pool.query("SELECT nombre FROM tipo_documento WHERE id = $1", [ id ]);
+        const result = await pool.query("SELECT tipo_documento, numero FROM documento WHERE id = $1", [ id ]);
 
         if (result.rows.length === 1) {
-            const { nombre } = req.body;
+            const { tipo_documento, numero } = req.body;
             const { id } = req.params;
-            const resultado = await pool.query("UPDATE tipo_documento SET nombre = $1 WHERE id = $2 RETURNING nombre", [ nombre, id ])
+            const resultado = await pool.query("UPDATE documento SET tipo_documento = $1, numero = $2 WHERE id = $3 RETURNING nombre", [ tipo_documento, numero, id ])
             
             res.json(resultado.rows[0])
         } else {

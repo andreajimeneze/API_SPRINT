@@ -59,6 +59,7 @@ export const realizarCompra = async (req, res) => {
     const client = await pool.connect();
     try {
       await client.query('BEGIN');
+      
       const { fecha, monto_neto, id_usuario, impuesto, monto_bruto, gasto_envio } = req.body.compra;
         
         const productos = req.body.productos.map(p => ({
@@ -89,8 +90,9 @@ export const realizarCompra = async (req, res) => {
   
       await Promise.all(promises);
       await client.query('COMMIT');
-      res.json({ mensaje: "Compra realizada con éxito" });
-      return compraInsertada.rows[0]
+      res.json({ compraId: compraInsertada.rows[0].id, mensaje: "Compra realizada con éxito" });
+      
+      return compraInsertada.rows[0].id;
     } catch (error) {
       await client.query('ROLLBACK');
       console.log('Compra cancelada');

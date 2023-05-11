@@ -59,18 +59,7 @@ CREATE TABLE detalle_compra(
 );
 
 
-CREATE TABLE tipo_documento (
-  id SERIAL PRIMARY KEY,
-  nombre varchar(50) NOT NULL
-  );
 
-CREATE SEQUENCE numero_documento_seq;
-CREATE TABLE numero_documento (
-  id SERIAL PRIMARY KEY,
-    id_tipo_documento INTEGER NOT NULL REFERENCES tipo_documento(id),
-    numero INTEGER DEFAULT NEXTVAL('numero_documento_seq'),
-    UNIQUE(id_tipo_documento, numero)
-  );
 
 CREATE TABLE datos_empresa (
   id SERIAL PRIMARY KEY,
@@ -81,6 +70,13 @@ CREATE TABLE datos_empresa (
   rut VARCHAR(20) NOT NULL
   );
 
+CREATE SEQUENCE documento_seq;
+CREATE TABLE documento (
+  id SERIAL PRIMARY KEY,
+    tipo_documento INTEGER NOT NULL,
+    numero INTEGER DEFAULT NEXTVAL('documento_seq'),
+    UNIQUE(tipo_documento, numero)
+  );
 
 ALTER TABLE registrousuario ADD CONSTRAINT unique_usuario UNIQUE (usuario);
 
@@ -104,11 +100,8 @@ ALTER TABLE detalle_compra ADD CONSTRAINT fk_detalle_compra_compra
 ALTER TABLE detalle_compra ADD CONSTRAINT fk_detalle_compra_producto
     FOREIGN KEY (id_pdto) REFERENCES producto (id);
 
-ALTER TABLE numero_documento ADD CONSTRAINT fk_numero_documento_tipo_documento
-    FOREIGN KEY (id_tipo_documento) REFERENCES tipo_documento (id);
-
-ALTER TABLE compra ADD CONSTRAINT fk_compra_tipo_documento
-    FOREIGN KEY (documento_id) REFERENCES tipo_documento (id);
+ALTER TABLE compra ADD CONSTRAINT fk_compra_documento
+    FOREIGN KEY (documento_id) REFERENCES documento (id);
 
 
 INSERT INTO categoria (categoria, imgCategoria) VALUES 
@@ -137,7 +130,4 @@ INSERT INTO rol (descripcion) VALUES ('admin'), ('user');
 INSERT INTO registrousuario(nombres, apellidos, rut, direccion, telefono, email, usuario, password, rol_id) VALUES ('Andrea', 'Jiménez Espinoza', '9339873-4', 'Pasaje Esmeralda 14', '965554730', 'andreacjimenez@gmail.com', 'admin', '9165', 1);
 
 INSERT INTO datos_empresa (nombre, direccion, telefono, email, rut) VALUES ('Pez Mosaico Limitada', 'Pasaje Esmeralda 14, Valparaíso', '965554730', 'pezmosaico@gmail.com', '76573333-2');
-
-
-
 
