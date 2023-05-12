@@ -9,9 +9,9 @@ Instrucciones para ejecutar el proyecto:
     - dotenv: paquete que permite la lectura sencilla de las variables de entorno en archivos de extensión;
     
 
-Su instalación es su instalación se realiza en el terminal de la siguiente manera: npm i "nombre de la librería" (sin comillas) Asimismo, y para poder visualizar el proyecto en tiempo real, se sugiera instalar nodemon.
+Su instalación se realiza en el terminal de la siguiente manera: npm i "nombre de la librería" (sin comillas) Asimismo, y para poder visualizar el proyecto en tiempo real, se sugiera instalar nodemon.
 
-2) Se incorporan las querys de entrada para cargar la base de datos con información mínima que permita visualizar el proyecto PEZ MOSAICO. Se deben ejecutar el archivo data.sql.
+2) Se incorporan las querys de entrada para cargar la base de datos con información mínima que permita visualizar el proyecto PEZ MOSAICO. Se deben ejecutar el archivo data.sql. La consulta de inserción de usuario en la tabla "registrousuario" es necesaria para poder ingresar al mantenedor. La query incluye el password ya encriptado pero al ingresar a través del ingreso de la aplicación se debe ingresar con el usuario admin y la contraseña 9165.
 
 3) La API se encuentra levantada en puerto 4000 y se accede a él por navegador en http://localhost:4000.
 
