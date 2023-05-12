@@ -124,7 +124,7 @@ INSERT INTO producto(nombre, precio, imagen, existencia, categoria_id, id_estado
 
 INSERT INTO rol (descripcion) VALUES ('admin'), ('user');
 
-INSERT INTO registrousuario(nombres, apellidos, rut, direccion, telefono, email, usuario, password, rol_id) VALUES ('Andrea', 'Jiménez Espinoza', '9339873-4', 'Pasaje Esmeralda 14', '965554730', 'andreacjimenez@gmail.com', 'admin', '9165', 1);
+INSERT INTO registrousuario(nombres, apellidos, rut, direccion, telefono, email, usuario, password, rol_id) VALUES ('Andrea', 'Jiménez Espinoza', '9339873-4', 'Pasaje Esmeralda 14', '965554730', 'andreacjimenez@gmail.com', 'admin', '798a28345310cb879a0f97df09d1f74ac12185a441fde0a2840eea9cb722a6d9', 1);
 
 INSERT INTO datos_empresa (nombre, direccion, telefono, email, rut) VALUES ('Pez Mosaico Limitada', 'Pasaje Esmeralda 14, Valparaíso', '965554730', 'pezmosaico@gmail.com', '76573333-2');
 
